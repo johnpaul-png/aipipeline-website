@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./vendor/react.js"></script><script src="./vendor/react-dom.js"></script><script src="./vendor/babel.js"></script><script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Geist+Mono:wght@100..600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;overflow-x:hidden;max-width:100vw}
+body{background:#0B0D14;color:#F3F4F7;font-family:'Geist','Inter',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#F3F4F7;text-decoration:none}
+a:hover{color:#7A9BF5}
+button{font-family:inherit}
+input,textarea{font-family:inherit;background:rgba(255,255,255,.022);color:#F3F4F7;width:100%;border:1px solid rgba(150,172,230,.2);border-radius:2px;transition:border-color .2s,background .2s}
+input:hover,textarea:hover{border-color:rgba(150,172,230,.34)}
+input:focus,textarea:focus{outline:none;border-color:#3E68E8;background:rgba(62,104,232,.05)}
+input::placeholder,textarea::placeholder{color:#767D90}
+@keyframes blip{0%,100%{opacity:1}50%{opacity:.2}}
+@keyframes rise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important}}
+@media (max-width:1024px){
+header nav{display:none !important}
+header a[data-nav="desktop-cta"]{display:none !important}
+[data-nav="burger"]{display:flex !important}
+[data-nav="panel"]{width:100% !important;max-width:100vw !important}
+h1{font-size:clamp(30px,8.4vw,42px) !important;line-height:1.04 !important}
+[data-el="covers"]{grid-template-columns:1fr !important;gap:0 !important}
+[data-el="cover"]{border-left:0 !important;border-top:1px solid rgba(150,172,230,.16) !important;padding:24px 0 !important}
+[data-el="sumrow"]{grid-template-columns:1fr !important;gap:6px !important}
+}
+
+
+@media (max-width:1024px){
+header>div{flex-wrap:nowrap !important}
+[data-nav="desktop"],[data-nav="desktop-cta"]{display:none !important}
+header nav[data-nav="desktop"]{display:none !important}
+[data-nav="burger"]{display:flex !important}
+[data-nav="panel"]{width:100% !important;max-width:100vw !important}
+}
+@media (min-width:1025px){[data-nav="panel"]{display:none !important}[data-nav="burger"]{display:none !important}}
+
+@media (max-width:1024px){
+}
+@media (max-width:640px){
+}
+
+@media (max-width:1024px){
+[data-el="foot"]{grid-template-columns:repeat(2,minmax(0,1fr)) !important;gap:40px !important}
+[data-el="foot"]>*:first-child{grid-column:1 / -1 !important}
+}
+@media (max-width:600px){
+[data-el="foot"]{grid-template-columns:1fr !important;gap:34px !important}
+[data-el="footbar"]{flex-direction:column !important;align-items:flex-start !important;gap:12px !important}
+}
+a[href="Contact.dc.html"],[data-nav="desktop-cta"]{opacity:1 !important;transform:none !important;animation:none !important}
+</style>
+</helmet>
+<div style="position:relative;min-height:100vh">
+<div style="position:fixed;left:0;top:0;right:0;bottom:0;pointer-events:none;z-index:1;opacity:.04;mix-blend-mode:overlay;background-image:url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E&quot;)"></div>
+<div style="position:absolute;left:50%;top:-360px;width:900px;height:700px;margin-left:-450px;pointer-events:none;background:radial-gradient(50% 50% at 50% 50%,rgba(62,104,232,.16),transparent 70%)"></div>
+
+<header style="position:sticky;top:0;z-index:50;background:rgba(11,13,20,.86);backdrop-filter:blur(20px) saturate(140%);border-bottom:1px solid rgba(150,172,230,.16)">
+<div style="max-width:1440px;margin:0 auto;padding:0 clamp(24px,5vw,80px);height:84px;display:flex;align-items:center;justify-content:space-between;gap:32px;flex-wrap:nowrap">
+<a href="index.html" aria-label="AI Pipeline — home" style="display:flex;align-items:center;height:30px;flex:none"><img src="uploads/logo.png" alt="AI Pipeline" width="1060" height="280" style="height:28px;width:106px;display:block;object-fit:contain"></a>
+<nav data-nav="desktop" style="display:flex;gap:38px;align-items:center">
+<a href="index.html" style="font:400 15.5px/1 'Geist Mono',monospace;letter-spacing:.11em;text-transform:uppercase;color:#AEB4C4" style-hover="color:#F3F4F7">Index</a>
+<a href="About.dc.html" style="font:400 15.5px/1 'Geist Mono',monospace;letter-spacing:.11em;text-transform:uppercase;color:#AEB4C4" style-hover="color:#F3F4F7">Practice</a>
+<a href="Pricing.dc.html" style="font:400 15.5px/1 'Geist Mono',monospace;letter-spacing:.11em;text-transform:uppercase;color:#AEB4C4" style-hover="color:#F3F4F7">Engagements</a>
+<a href="Blog.dc.html" style="font:400 15.5px/1 'Geist Mono',monospace;letter-spacing:.11em;text-transform:uppercase;color:#AEB4C4" style-hover="color:#F3F4F7">Notes</a>
+<a href="https://aipipelineportal.ca/" style="font:400 15.5px/1 'Geist Mono',monospace;letter-spacing:.11em;text-transform:uppercase;color:#8A90A2" style-hover="color:#F3F4F7">Portal</a>
+</nav>
+<button data-nav="burger" onClick="{{ toggleMenu }}" style="display:none;align-items:center;gap:9px;background:none;border:1px solid rgba(150,172,230,.28);padding:15px 18px;cursor:pointer;font:400 14px/1 'Geist Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:#F3F4F7">{{ menuLabel }}</button>
+<span data-nav="desktop-cta" style="display:flex;align-items:center;gap:10px;font:400 12.5px/1 'Geist Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:#7A9BF5">
+<span style="width:5px;height:5px;background:#3E68E8;display:block;animation:blip 2.6s infinite"></span>Contact</span>
+</div>
+<sc-if value="{{ menuOpen }}" hint-placeholder-val="{{ false }}">
+<div data-nav="panel" style="border-top:1px solid rgba(150,172,230,.16);background:rgba(11,13,20,.98);padding:0 clamp(20px,5vw,80px) 24px;display:flex;flex-direction:column">
+<a href="index.html" style="font:400 15.5px/1 'Geist Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:#A8AEBE;padding:21px 0;border-top:1px solid rgba(150,172,230,.16)">Index</a>
+<a href="About.dc.html" style="font:400 15.5px/1 'Geist Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:#A8AEBE;padding:21px 0;border-top:1px solid rgba(150,172,230,.16)">Practice</a>
+<a href="Pricing.dc.html" style="font:400 15.5px/1 'Geist Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:#A8AEBE;padding:21px 0;border-top:1px solid rgba(150,172,230,.16)">Engagements</a>
+<a href="Blog.dc.html" style="font:400 15.5px/1 'Geist Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:#A8AEBE;padding:21px 0;border-top:1px solid rgba(150,172,230,.16)">Notes</a>
+<a href="https://aipipelineportal.ca/" style="font:400 15.5px/1 'Geist Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:#A8AEBE;padding:21px 0;border-top:1px solid rgba(150,172,230,.16)">Portal</a>
+</div>
+</sc-if>
+</header>
+
+<main style="position:relative;z-index:2;padding:0 clamp(24px,5vw,80px)">
+<div style="max-width:680px;margin:0 auto">
+
+<section style="padding:clamp(64px,12vh,132px) 0 0;text-align:center">
+<div style="display:flex;align-items:center;justify-content:center;gap:10px">
+<span style="width:5px;height:5px;background:#3E68E8;display:block;animation:blip 2.6s infinite"></span>
+<span style="font:400 12.5px/1 'Geist Mono',monospace;letter-spacing:.26em;text-transform:uppercase;color:#B4BACA">Request the audit</span>
+</div>
+<h1 style="margin:clamp(28px,4vw,44px) 0 0;font:200 clamp(38px,5.6vw,68px)/1.02 'Geist',sans-serif;letter-spacing:-.045em">Book your operations audit</h1>
+<p style="margin:clamp(22px,3vw,34px) auto 0;max-width:52ch;font:300 clamp(15.5px,1.3vw,18px)/1.68 'Geist',sans-serif;color:#9AA1B4;letter-spacing:-.008em;text-wrap:pretty">A short, no-obligation call. We map where your hours go and show you what's automatable — no pitch, no commitment.</p>
+</section>
+
+<sc-if value="{{ notSent }}" hint-placeholder-val="{{ true }}">
+<section style="padding:clamp(56px,8vw,96px) 0 0">
+<form onSubmit="{{ onSubmit }}" name="audit" method="POST" data-netlify="true" style="display:flex;flex-direction:column;gap:clamp(26px,3.4vw,38px)">
+<input type="hidden" name="form-name" value="audit">
+<input type="hidden" name="reference" value="{{ ref }}">
+
+<label style="display:block">
+<span style="display:block;font:400 11px/1 'Geist Mono',monospace;letter-spacing:.2em;text-transform:uppercase;color:#9AA1B4;margin-bottom:14px">Name</span>
+<input type="text" name="name" autocomplete="name" placeholder="First and last" onChange="{{ setName }}" style="padding:19px 18px;font:300 17px/1.3 'Geist',sans-serif;border-color:{{ nameLine }}">
+</label>
+
+<label style="display:block">
+<span style="display:block;font:400 11px/1 'Geist Mono',monospace;letter-spacing:.2em;text-transform:uppercase;color:#9AA1B4;margin-bottom:14px">Work email</span>
+<input type="email" name="email" autocomplete="email" placeholder="you@company.com" onChange="{{ setEmail }}" style="padding:19px 18px;font:300 17px/1.3 'Geist',sans-serif;border-color:{{ emailLine }}">
+</label>
+
+<label style="display:block">
+<span style="display:block;font:400 11px/1 'Geist Mono',monospace;letter-spacing:.2em;text-transform:uppercase;color:#9AA1B4;margin-bottom:14px">Company</span>
+<input type="text" name="company" autocomplete="organization" placeholder="Company name" onChange="{{ setCompany }}" style="padding:19px 18px;font:300 17px/1.3 'Geist',sans-serif;border-color:{{ companyLine }}">
+</label>
+
+<label style="display:block">
+<span style="display:block;font:400 11px/1 'Geist Mono',monospace;letter-spacing:.2em;text-transform:uppercase;color:#9AA1B4;margin-bottom:14px">Role</span>
+<input type="text" name="role" autocomplete="organization-title" placeholder="VP Operations, COO, Owner…" onChange="{{ setRole }}" style="padding:19px 18px;font:300 17px/1.3 'Geist',sans-serif">
+</label>
+
+<label style="display:block;padding-top:clamp(6px,1vw,14px)">
+<span style="display:block;font:400 11px/1 'Geist Mono',monospace;letter-spacing:.2em;text-transform:uppercase;color:#8A90A2;margin-bottom:14px">Anything we should know? (optional)</span>
+<textarea name="notes" rows="4" placeholder="e.g. our daily report takes three people until 9am" onChange="{{ setNotes }}" style="padding:18px;font:300 16px/1.7 'Geist',sans-serif;resize:vertical"></textarea>
+</label>
+
+<div style="padding-top:clamp(8px,1.4vw,18px)">
+<button type="submit" style="cursor:pointer;width:100%;background:#3E68E8;border:1px solid #3E68E8;border-radius:2px;padding:22px;font:400 12px/1 'Geist Mono',monospace;letter-spacing:.22em;text-transform:uppercase;color:#F3F4F7;transition:background .2s,border-color .2s" style-hover="background:#5A80F0;border-color:#5A80F0">Book the audit</button>
+<div style="margin-top:18px;text-align:center;font:400 11px/1.7 'Geist Mono',monospace;letter-spacing:.14em;color:{{ errColor }}">{{ statusLine }}</div>
+</div>
+</form>
+</section>
+</sc-if>
+
+<sc-if value="{{ sent }}" hint-placeholder-val="{{ false }}">
+<section style="padding:clamp(56px,8vw,96px) 0 0;animation:rise .4s ease">
+<div style="border:1px solid rgba(62,104,232,.35);background:rgba(62,104,232,.06);border-radius:2px;padding:clamp(30px,4vw,48px);text-align:center">
+<div style="display:flex;align-items:center;justify-content:center;gap:10px">
+<span style="width:6px;height:6px;background:#3E68E8;display:block"></span>
+<span style="font:400 11px/1 'Geist Mono',monospace;letter-spacing:.2em;color:#7A9BF5">Request received · {{ ref }}</span>
+</div>
+<h2 style="margin:24px 0 0;font:200 clamp(26px,3.4vw,40px)/1.1 'Geist',sans-serif;letter-spacing:-.038em">Thanks {{ firstName }} — we'll be in touch.</h2>
+<p style="margin:20px auto 0;max-width:46ch;font:300 15.5px/1.7 'Geist',sans-serif;color:#9AA1B4;text-wrap:pretty">You'll hear from us within one business day with a couple of times to choose from. We'll read up on your operation first, so the call goes on your workflows rather than introductions.</p>
+</div>
+<div style="margin-top:clamp(28px,3.4vw,40px)">
+<sc-for list="{{ summary }}" as="row" hint-placeholder-count="4">
+<div data-el="sumrow" style="display:grid;grid-template-columns:140px 1fr;gap:22px;padding:16px 0;border-top:1px solid rgba(150,172,230,.16)">
+<span style="font:400 11px/1.5 'Geist Mono',monospace;letter-spacing:.18em;color:#8A90A2">{{ row.k }}</span>
+<span style="font:400 14.5px/1.55 'Geist',sans-serif;color:#F3F4F7">{{ row.v }}</span>
+</div>
+</sc-for>
+</div>
+<button onClick="{{ reset }}" style="cursor:pointer;margin-top:clamp(26px,3vw,36px);background:none;border:1px solid rgba(150,172,230,.24);border-radius:2px;padding:16px 22px;font:400 11px/1 'Geist Mono',monospace;letter-spacing:.2em;text-transform:uppercase;color:#9AA1B4" style-hover="border-color:#3E68E8;color:#7A9BF5">Send another request</button>
+</section>
+</sc-if>
+
+<section style="padding:clamp(72px,11vw,140px) 0 clamp(64px,9vw,110px)">
+<div style="text-align:center;padding-bottom:clamp(30px,4vw,48px)">
+<span style="font:400 11px/1 'Geist Mono',monospace;letter-spacing:.26em;text-transform:uppercase;color:#8A90A2">What the 15 minutes covers</span>
+</div>
+<div data-el="covers" style="display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,4vw,48px) clamp(32px,5vw,56px)">
+<sc-for list="{{ covers }}" as="c" hint-placeholder-count="4">
+<div data-el="cover" style="border-left:1px solid rgba(150,172,230,.16);padding:2px 0 2px clamp(20px,2.4vw,28px)">
+<div style="font:200 clamp(24px,2.2vw,34px)/1 'Geist',sans-serif;letter-spacing:-.03em;color:#7A9BF5">{{ c.t }}</div>
+<div style="font:400 17px/1.3 'Geist',sans-serif;letter-spacing:-.02em;margin-top:14px">{{ c.title }}</div>
+<p style="margin:12px 0 0;font:400 14px/1.65 'Geist',sans-serif;color:#9AA1B4">{{ c.body }}</p>
+</div>
+</sc-for>
+</div>
+<div style="text-align:center;margin-top:clamp(44px,6vw,72px);display:flex;flex-direction:column;gap:14px;align-items:center">
+<span style="font:400 11px/1.8 'Geist Mono',monospace;letter-spacing:.16em;color:#8A90A2">Prefer email? <a href="mailto:contact@aipipeline.ca" style="color:#7A9BF5">contact@aipipeline.ca</a></span>
+<span style="font:400 11px/1.8 'Geist Mono',monospace;letter-spacing:.14em;color:#767D90">Nothing you send is used for anything but preparing this conversation.<br>No sequences, no list, no resale.</span>
+</div>
+</section>
+</div>
+</main>
+
+<footer style="border-top:1px solid rgba(150,172,230,.16);position:relative;z-index:2">
+<div data-el="foot" style="max-width:1280px;margin:0 auto;padding:clamp(52px,6.5vw,92px) clamp(24px,5vw,64px) clamp(40px,4.6vw,60px);display:grid;grid-template-columns:minmax(0,1.7fr) repeat(3,minmax(0,1fr));gap:clamp(32px,4vw,64px);align-items:start">
+<div style="display:flex;flex-direction:column;align-items:flex-start;gap:22px">
+<img src="uploads/logo.png" alt="AI Pipeline" width="1060" height="280" style="height:26px;width:98.4px;display:block;object-fit:contain;flex:none">
+<p style="margin:0;max-width:32ch;font:400 14px/1.7 'Geist',sans-serif;color:#A8AEBE;text-wrap:pretty">Operational intelligence for the energy industry — we turn complex operations into automated, intelligent workflows.</p>
+<a href="Contact.dc.html" style="display:inline-flex;align-items:center;justify-content:center;margin-top:4px;font:400 12.5px/1 'Geist Mono',monospace;letter-spacing:.16em;text-transform:uppercase;color:#F3F4F7;background:#3E68E8;border:1px solid #3E68E8;border-radius:2px;padding:17px 24px;white-space:nowrap;transition:background .2s,border-color .2s" style-hover="background:#5A80F0;border-color:#5A80F0">Book a consultation</a>
+</div>
+<div data-el="footcol" style="display:flex;flex-direction:column;align-items:flex-start;gap:0">
+<span style="font:400 11px/1 'Geist Mono',monospace;letter-spacing:.2em;text-transform:uppercase;color:#8A90A2;padding-bottom:20px">Solutions</span>
+<a href="About.dc.html" style="font:400 14px/1 'Geist',sans-serif;color:#A8AEBE;padding:13px 0;transition:color .18s" style-hover="color:#F3F4F7">Practice</a>
+<a href="Pricing.dc.html" style="font:400 14px/1 'Geist',sans-serif;color:#A8AEBE;padding:13px 0;transition:color .18s" style-hover="color:#F3F4F7">Engagements</a>
+<a href="index.html#systems" style="font:400 14px/1 'Geist',sans-serif;color:#A8AEBE;padding:13px 0;transition:color .18s" style-hover="color:#F3F4F7">Live systems</a>
+<a href="Blog.dc.html" style="font:400 14px/1 'Geist',sans-serif;color:#A8AEBE;padding:13px 0;transition:color .18s" style-hover="color:#F3F4F7">Field notes</a>
+</div>
+<div data-el="footcol" style="display:flex;flex-direction:column;align-items:flex-start;gap:0">
+<span style="font:400 11px/1 'Geist Mono',monospace;letter-spacing:.2em;text-transform:uppercase;color:#8A90A2;padding-bottom:20px">Company</span>
+<a href="index.html" style="font:400 14px/1 'Geist',sans-serif;color:#A8AEBE;padding:13px 0;transition:color .18s" style-hover="color:#F3F4F7">Index</a>
+<a href="About.dc.html" style="font:400 14px/1 'Geist',sans-serif;color:#A8AEBE;padding:13px 0;transition:color .18s" style-hover="color:#F3F4F7">About</a>
+<a href="Blog.dc.html" style="font:400 14px/1 'Geist',sans-serif;color:#A8AEBE;padding:13px 0;transition:color .18s" style-hover="color:#F3F4F7">Notes</a>
+<a href="Contact.dc.html" style="font:400 14px/1 'Geist',sans-serif;color:#A8AEBE;padding:13px 0;transition:color .18s" style-hover="color:#F3F4F7">Contact</a>
+<a href="https://aipipelineportal.ca/" style="font:400 14px/1 'Geist',sans-serif;color:#A8AEBE;padding:13px 0;transition:color .18s" style-hover="color:#F3F4F7">Client portal</a>
+</div>
+<div data-el="footcol" style="display:flex;flex-direction:column;align-items:flex-start;gap:0">
+<span style="font:400 11px/1 'Geist Mono',monospace;letter-spacing:.2em;text-transform:uppercase;color:#8A90A2;padding-bottom:20px">Contact</span>
+<a href="mailto:contact@aipipeline.ca" style="font:400 13px/1 'Geist Mono',monospace;letter-spacing:.01em;color:#A8AEBE;padding:13px 0;transition:color .18s" style-hover="color:#7A9BF5">contact@aipipeline.ca</a>
+<a href="mailto:support@aipipeline.ca" style="font:400 13px/1 'Geist Mono',monospace;letter-spacing:.01em;color:#A8AEBE;padding:13px 0;transition:color .18s" style-hover="color:#7A9BF5">support@aipipeline.ca</a>
+<a href="mailto:billing@aipipeline.ca" style="font:400 13px/1 'Geist Mono',monospace;letter-spacing:.01em;color:#A8AEBE;padding:13px 0;transition:color .18s" style-hover="color:#7A9BF5">billing@aipipeline.ca</a>
+</div>
+</div>
+<div style="border-top:1px solid rgba(150,172,230,.16)">
+<div data-el="footbar" style="max-width:1280px;margin:0 auto;padding:24px clamp(24px,5vw,64px);display:flex;align-items:baseline;justify-content:space-between;gap:20px;flex-wrap:wrap">
+<span style="font:400 11.5px/1.4 'Geist Mono',monospace;letter-spacing:.1em;color:#8A90A2">© AI Pipeline 2026. All rights reserved.</span>
+<span style="display:flex;gap:28px;flex-wrap:wrap">
+<a href="Contact.dc.html" style="font:400 11.5px/1.4 'Geist Mono',monospace;letter-spacing:.1em;text-transform:uppercase;color:#8A90A2;transition:color .18s" style-hover="color:#F3F4F7">Privacy policy</a>
+<a href="Contact.dc.html" style="font:400 11.5px/1.4 'Geist Mono',monospace;letter-spacing:.1em;text-transform:uppercase;color:#8A90A2;transition:color .18s" style-hover="color:#F3F4F7">Terms</a>
+</span>
+</div>
+</div>
+</footer>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state={name:"",email:"",company:"",role:"",notes:"",sent:false,err:"",ref:"",menu:false};
+
+  submit(e){
+    if(e&&e.preventDefault) e.preventDefault();
+    const S=this.state, missing=[];
+    if(!S.name.trim()) missing.push("NAME");
+    if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(S.email.trim())) missing.push("VALID WORK EMAIL");
+    if(!S.company.trim()) missing.push("COMPANY");
+    if(missing.length){this.setState({err:"MISSING: "+missing.join(" · ")});return false;}
+    const ref="APX-"+Math.floor(100000+Math.random()*899999);
+    // deliver to Netlify Forms, then show the inline confirmation either way
+    try{
+      const body=new URLSearchParams({
+        "form-name":"audit",reference:ref,
+        name:S.name,email:S.email,company:S.company,role:S.role,notes:S.notes
+      }).toString();
+      fetch("/",{method:"POST",headers:{"Content-Type":"application/x-www-form-urlencoded"},body}).catch(()=>{});
+    }catch(err){}
+    this.setState({sent:true,err:"",ref});
+    return false;
+  }
+
+  renderVals(){
+    const S=this.state;
+    const set=k=>(e)=>this.setState({[k]:e.target.value,err:""});
+    const bad=k=>S.err&&S.err.indexOf(k)>-1?"#3E68E8":"rgba(150,172,230,.2)";
+    return {
+      menuOpen:!!S.menu,
+      menuLabel:S.menu?"Close":"Menu",
+      toggleMenu:()=>this.setState(st=>({menu:!st.menu})),
+
+      setName:set("name"),setEmail:set("email"),setCompany:set("company"),
+      setRole:set("role"),setNotes:set("notes"),
+      nameLine:bad("NAME"),emailLine:bad("EMAIL"),companyLine:bad("COMPANY"),
+      onSubmit:(e)=>this.submit(e),
+      statusLine:S.err?S.err:"WE REPLY WITHIN ONE BUSINESS DAY",
+      errColor:S.err?"#7A9BF5":"#767D90",
+
+      notSent:!S.sent,sent:S.sent,ref:S.ref,
+      firstName:(S.name.trim().split(/\s+/)[0]||"there"),
+      reset:()=>this.setState({name:"",email:"",company:"",role:"",notes:"",sent:false,err:"",ref:""}),
+      summary:[
+        {k:"CONTACT",v:S.name+(S.role.trim()?" · "+S.role.trim():"")},
+        {k:"COMPANY",v:S.company},
+        {k:"EMAIL",v:S.email},
+        {k:"NOTES",v:S.notes.trim()||"none"}
+      ],
+      covers:[
+        {t:"01",title:"Where your hours go",body:"You describe the workflow. We ask about volume, people, and how often it gets redone."},
+        {t:"02",title:"What's automatable",body:"We separate the assembly work from the judgment calls. Only one of them should be automated."},
+        {t:"03",title:"What it's worth",body:"A rough hour and dollar figure, using your numbers rather than a case study."},
+        {t:"04",title:"Whether to build",body:"A straight go or no-go. If the answer is no, you get the reasoning and nothing else."}
+      ]
+    };
+  }
+}
+
+</script>
+</body>
+</html>

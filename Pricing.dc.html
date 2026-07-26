@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./vendor/react.js"></script><script src="./vendor/react-dom.js"></script><script src="./vendor/babel.js"></script><script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Geist+Mono:wght@100..600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:#0B0D14;color:#F3F4F7;font-family:'Geist','Inter',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#F3F4F7;text-decoration:none}
+a:hover{color:#7A9BF5}
+button{font-family:inherit}
+::selection{background:#3E68E8;color:#F3F4F7}
+input[type=range]{-webkit-appearance:none;appearance:none;height:1px;background:rgba(122,155,245,.3);outline:none}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:11px;height:11px;background:#3E68E8;cursor:ew-resize;border:0}
+input[type=range]::-moz-range-thumb{width:11px;height:11px;background:#3E68E8;cursor:ew-resize;border:0;border-radius:0}
+[data-reveal]{opacity:1;transform:none;animation:revealUp .7s cubic-bezier(.2,.7,.2,1) both}
+[data-reveal="in"]{opacity:1;transform:none}
+@keyframes revealUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes blip{0%,100%{opacity:1}50%{opacity:.2}}
+@media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important}[data-reveal]{opacity:1 !important;transform:none !important}}
+
+@media (max-width:980px){
+header>div{height:72px !important;flex-wrap:nowrap !important}
+header nav{gap:20px !important;flex-wrap:wrap !important}
+[style*="repeat(12"]{grid-template-columns:1fr !important;gap:22px !important}
+[style*="repeat(12"]>*{grid-column:auto !important;justify-self:stretch !important;text-align:left !important;max-width:100% !important}
+[style*="repeat(6"]{grid-template-columns:repeat(3,1fr) !important}
+[style*="repeat(4"]{grid-template-columns:repeat(2,1fr) !important}
+[style*="repeat(3"]{grid-template-columns:1fr !important}
+}
+@media (max-width:640px){
+[style*="repeat(6"]{grid-template-columns:repeat(2,1fr) !important}
+[style*="repeat(4"]{grid-template-columns:1fr !important}
+header nav{gap:14px !important}
+}
+
+html,body{overflow-x:hidden;max-width:100vw}
+@media (max-width:1024px){
+[data-nav="desktop"],[data-nav="desktop-cta"]{display:none !important}
+[data-nav="burger"]{display:flex !important}
+h1{font-size:clamp(30px,8.6vw,46px) !important;letter-spacing:-.035em !important;max-width:100% !important;height:auto !important;width:auto !important}
+h2{font-size:clamp(24px,6.4vw,34px) !important;letter-spacing:-.03em !important}
+h3{font-size:clamp(18px,4.6vw,23px) !important}
+[data-fabric="svg"]{display:none !important}
+[data-fabric="stack"]{display:flex !important}
+[data-spine]{display:none !important}
+[data-tabs]{overflow-x:auto !important;-webkit-overflow-scrolling:touch}
+[data-filterbar]{position:static !important;display:flex !important;flex-direction:row !important;overflow-x:auto !important;gap:6px !important;padding-bottom:8px !important;-webkit-overflow-scrolling:touch}
+[data-filterbar]>*{flex:none !important;border-left-width:0 !important;border-top:1px solid rgba(150,172,230,.16) !important;padding:14px 16px !important}
+input[type=range]{height:3px !important;padding:16px 0 !important}
+input[type=range]::-webkit-slider-thumb{width:22px !important;height:22px !important}
+input[type=range]::-moz-range-thumb{width:22px !important;height:22px !important}
+input[type=text],input[type=email],textarea{font-size:16px !important;padding:18px 0 14px !important}
+}
+@media (max-width:520px){
+h1{font-size:clamp(28px,9.4vw,38px) !important}
+h2{font-size:clamp(22px,7.4vw,29px) !important}
+[style*="repeat(3"]{grid-template-columns:1fr !important}
+[style*="repeat(6"]{grid-template-columns:repeat(2,1fr) !important}
+[style*="repeat(4"]{grid-template-columns:1fr !important}
+}
+
+/* ---- mobile / tablet polish ---- */
+@media (max-width:820px){
+header .dc-mount,header>div{min-height:56px}
+main section{padding-top:clamp(44px,8vw,60px) !important}
+main section:first-of-type{padding-top:clamp(34px,7vw,48px) !important}
+h1{font-size:clamp(28px,7.6vw,40px) !important;line-height:1.02 !important;letter-spacing:-.035em !important}
+h2{font-size:clamp(21px,5.6vw,28px) !important;line-height:1.1 !important;letter-spacing:-.028em !important}
+h3{font-size:clamp(16px,4.4vw,20px) !important;line-height:1.24 !important}
+p{font-size:14px !important;line-height:1.65 !important}
+footer [style*="repeat(12"]{gap:26px !important}
+}
+@media (max-width:520px){
+main section{padding-top:clamp(38px,9vw,48px) !important}
+h1{font-size:clamp(26px,8.4vw,34px) !important}
+h2{font-size:clamp(19px,6.4vw,24px) !important}
+p{font-size:13.5px !important}
+[style*="repeat(2,1fr)"]{grid-template-columns:1fr !important}
+}
+
+@media (max-width:1024px){
+header nav{display:none !important}
+[data-nav="desktop-cta"]{display:none !important}
+main section{overflow:hidden}
+[style*="radial-gradient"]{max-width:100vw !important}
+}
+
+@media (max-width:820px){
+[data-cols2],[data-fields],[data-sumrow]{grid-template-columns:1fr !important;gap:18px !important}
+[data-fig="save"]{font-size:clamp(36px,11vw,52px) !important}
+[data-fig="feature"]{font-size:clamp(40px,12vw,58px) !important}
+[data-filtercol]{position:static !important}
+}
+
+@media (max-width:820px){
+}
+
+@media (max-width:820px){
+[data-spine]{display:none !important}
+[data-rail]{display:block !important;padding-top:26px !important;padding-bottom:26px !important}
+[data-rail]>*{width:100% !important;max-width:100% !important}
+[data-el="stage-rail"]{display:none !important}
+[data-el="stage-mhead"]{display:flex !important;margin-bottom:16px !important}
+[data-el="stage-name"]{display:none !important}
+[data-rail] h3{margin-top:0 !important}
+[data-rail] p{margin-top:14px !important;max-width:100% !important}
+[data-el="deliv-head"]{margin-top:24px !important;row-gap:6px !important}
+[data-el="deliv-item"]{font-size:13px !important;line-height:1.5 !important}
+[data-el="deliv-item"]{}
+}
+
+
+@media (max-width:820px){
+[data-nav="panel"]{width:100% !important;max-width:100vw !important;overflow:hidden !important;flex-direction:column !important}
+footer [style*="repeat(12"]{grid-template-columns:1fr !important;gap:22px !important}
+footer>div{flex-wrap:wrap !important;row-gap:14px !important}
+main>div>section:last-of-type{padding-bottom:56px !important}
+main section{overflow:hidden !important}
+img{max-width:100% !important;height:auto}
+svg{max-width:100% !important}
+}
+
+@media (max-width:1024px){
+header>div{flex-wrap:nowrap !important}
+[data-nav="desktop"],[data-nav="desktop-cta"]{display:none !important}
+header nav[data-nav="desktop"]{display:none !important}
+[data-nav="burger"]{display:flex !important}
+[data-nav="panel"]{width:100% !important;max-width:100vw !important}
+}
+@media (min-width:1025px){[data-nav="panel"]{display:none !important}[data-nav="burger"]{display:none !important}}
+
+@media (max-width:1024px){
+}
+@media (max-width:640px){
+}
+
+@media (max-width:1024px){
+[data-el="foot"]{grid-template-columns:repeat(2,minmax(0,1fr)) !important;gap:40px !important}
+[data-el="foot"]>*:first-child{grid-column:1 / -1 !important}
+}
+@media (max-width:600px){
+[data-el="foot"]{grid-template-columns:1fr !important;gap:34px !important}
+[data-el="footbar"]{flex-direction:column !important;align-items:flex-start !important;gap:12px !important}
+}
+a[href="Contact.dc.html"],[data-nav="desktop-cta"]{opacity:1 !important;transform:none !important;animation:none !important}
+</style>
+</helmet>
+<div style="position:relative;min-height:100vh;overflow:clip">
+<div style="position:fixed;left:0;top:0;right:0;bottom:0;pointer-events:none;z-index:1;opacity:.04;mix-blend-mode:overlay;background-image:url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E&quot;)"></div>
+<div style="position:absolute;left:22%;top:-360px;width:1000px;height:700px;pointer-events:none;background:radial-gradient(50% 50% at 50% 50%,rgba(62,104,232,.19),transparent 70%)"></div>
+
+<header style="position:sticky;top:0;z-index:50;background:rgba(8,9,12,.82);backdrop-filter:blur(20px) saturate(140%);border-bottom:1px solid rgba(150,172,230,.16)">
+<div style="max-width:1440px;margin:0 auto;padding:0 clamp(24px,5vw,80px);height:84px;display:flex;align-items:center;justify-content:space-between;gap:32px;flex-wrap:nowrap">
+<a href="index.html" aria-label="AI Pipeline — home" style="display:flex;align-items:center;height:30px;flex:none"><img src="uploads/logo.png" alt="AI Pipeline" width="1060" height="280" style="height:28px;width:106px;display:block;object-fit:contain"></a>
+<nav data-nav="desktop" style="display:flex;gap:38px;align-items:center">
+<a href="index.html" style="font:400 15.5px/1 'Geist Mono',monospace;letter-spacing:.11em;text-transform:uppercase;color:#AEB4C4" style-hover="color:#F3F4F7">Index</a>
+<a href="About.dc.html" style="font:400 15.5px/1 'Geist Mono',monospace;letter-spacing:.11em;text-transform:uppercase;color:#AEB4C4" style-hover="color:#F3F4F7">Practice</a>
+<a href="Pricing.dc.html" style="font:400 15.5px/1 'Geist Mono',monospace;letter-spacing:.11em;text-transform:uppercase;color:#7A9BF5">Engagements</a>
+<a href="Blog.dc.html" style="font:400 15.5px/1 'Geist Mono',monospace;letter-spacing:.11em;text-transform:uppercase;color:#AEB4C4" style-hover="color:#F3F4F7">Notes</a>
+<a href="https://aipipelineportal.ca/" style="font:400 15.5px/1 'Geist Mono',monospace;letter-spacing:.11em;text-transform:uppercase;color:#8A90A2" style-hover="color:#F3F4F7">Portal</a>
+</nav>
+<button data-nav="burger" onClick="{{ toggleMenu }}" style="display:none;align-items:center;gap:9px;background:none;border:1px solid rgba(150,172,230,.28);padding:15px 18px;cursor:pointer;font:400 14px/1 'Geist Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:#F3F4F7">{{ menuLabel }}</button>
+<a href="Contact.dc.html" data-nav="desktop-cta" style="display:flex;align-items:center;gap:10px;font:400 15px/1 'Geist Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:#F3F4F7;background:#3E68E8;border:1px solid #3E68E8;border-radius:2px;padding:16px 24px;transition:background .2s,border-color .2s" style-hover="background:#5A80F0;border-color:#5A80F0">
+<span style="width:5px;height:5px;background:#3E68E8;display:block;animation:blip 2.6s infinite"></span>Book a consultation</a>
+</div>
+<sc-if value="{{ menuOpen }}" hint-placeholder-val="{{ false }}">
+<div data-nav="panel" style="border-top:1px solid rgba(150,172,230,.16);background:rgba(11,13,20,.98);padding:0 clamp(20px,5vw,80px) 24px;display:flex;flex-direction:column">
+<a href="index.html" style="font:400 15.5px/1 'Geist Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:#A8AEBE;padding:21px 0;border-top:1px solid rgba(150,172,230,.16)">Index</a>
+<a href="About.dc.html" style="font:400 15.5px/1 'Geist Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:#A8AEBE;padding:21px 0;border-top:1px solid rgba(150,172,230,.16)">Practice</a>
+<a href="Pricing.dc.html" style="font:400 15.5px/1 'Geist Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:#A8AEBE;padding:21px 0;border-top:1px solid rgba(150,172,230,.16)">Engagements</a>
+<a href="Blog.dc.html" style="font:400 15.5px/1 'Geist Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:#A8AEBE;padding:21px 0;border-top:1px solid rgba(150,172,230,.16)">Notes</a>
+<a href="https://aipipelineportal.ca/" style="font:400 15.5px/1 'Geist Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:#A8AEBE;padding:21px 0;border-top:1px solid rgba(150,172,230,.16)">Portal</a>
+<a href="Contact.dc.html" style="font:400 15px/1 'Geist Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:#F3F4F7;background:#3E68E8;border:1px solid #3E68E8;border-top:none;border-radius:2px;padding:18px 22px;margin-top:20px;text-align:center">Book a consultation →</a>
+</div>
+</sc-if>
+</header>
+
+<main style="position:relative;z-index:2">
+<div style="max-width:1440px;margin:0 auto;padding:0 clamp(24px,5vw,80px)">
+
+<section style="padding:clamp(80px,13vh,150px) 0 0">
+<div style="display:grid;grid-template-columns:repeat(12,1fr);gap:28px;align-items:end">
+<div style="grid-column:1 / span 8" data-reveal>
+<div style="font:400 11px/1 'Geist Mono',monospace;letter-spacing:.28em;text-transform:uppercase;color:#9AA1B4;margin-bottom:clamp(28px,4vw,52px)">Engagements</div>
+<h1 style="margin:0;font:200 clamp(46px,7.6vw,112px)/0.94 'Geist',sans-serif;letter-spacing:-.05em">Built around <span style="color:#7A9BF5">your operation</span>, not a price list.</h1>
+</div>
+<div style="grid-column:10 / span 3" data-reveal>
+<div style="font:400 11px/1 'Geist Mono',monospace;letter-spacing:.24em;text-transform:uppercase;color:#8A90A2;padding-bottom:14px">Delivery arc</div>
+<div style="display:flex;flex-direction:column">
+<div style="display:flex;justify-content:space-between;gap:14px;padding:12px 0;border-top:1px solid rgba(150,172,230,.16)"><span style="font:400 11.5px/1 'Geist Mono',monospace;letter-spacing:.13em;color:#8A90A2">01</span><span style="font:400 11px/1 'Geist Mono',monospace;letter-spacing:.16em;color:#F3F4F7">AUDIT</span></div>
+<div style="display:flex;justify-content:space-between;gap:14px;padding:12px 0;border-top:1px solid rgba(150,172,230,.16)"><span style="font:400 11.5px/1 'Geist Mono',monospace;letter-spacing:.13em;color:#8A90A2">02</span><span style="font:400 11px/1 'Geist Mono',monospace;letter-spacing:.16em;color:#F3F4F7">DEPLOY</span></div>
+<div style="display:flex;justify-content:space-between;gap:14px;padding:12px 0;border-top:1px solid rgba(150,172,230,.16)"><span style="font:400 11.5px/1 'Geist Mono',monospace;letter-spacing:.13em;color:#8A90A2">03</span><span style="font:400 11px/1 'Geist Mono',monospace;letter-spacing:.16em;color:#F3F4F7">SCALE</span></div>
+<div style="display:flex;justify-content:space-between;gap:14px;padding:12px 0;border-top:1px solid rgba(150,172,230,.16)"><span style="font:400 11.5px/1 'Geist Mono',monospace;letter-spacing:.13em;color:#8A90A2">04</span><span style="font:400 11px/1 'Geist Mono',monospace;letter-spacing:.16em;color:#7A9BF5">OPTIMIZE</span></div>
+</div>
+<div style="font:400 11px/1.7 'Geist Mono',monospace;letter-spacing:.08em;color:#8A90A2;margin-top:14px">EVERY ENGAGEMENT SCOPED TO YOUR WORKFLOWS</div>
+</div>
+</div>
+</section>
+
+<section style="padding:clamp(70px,9vw,130px) 0 0">
+<div style="display:flex;align-items:baseline;justify-content:space-between;gap:24px;flex-wrap:wrap;padding-bottom:26px">
+<span style="font:400 11px/1 'Geist Mono',monospace;letter-spacing:.24em;color:#9AA1B4;text-transform:uppercase">One engagement model, four stages</span>
+<span style="font:400 11px/1 'Geist Mono',monospace;letter-spacing:.16em;color:#8A90A2">EVERY ENGAGEMENT IS SCOPED TO THE OPERATION · NO FIXED PRICING</span>
+</div>
+<div style="border-top:1px solid rgba(150,172,230,.16);position:relative">
+<div data-spine style="position:absolute;left:78px;top:0;bottom:0;width:1px;background:linear-gradient(180deg,rgba(62,104,232,.6),rgba(150,172,230,.16) 62%,rgba(255,255,255,.04));pointer-events:none"></div>
+<sc-for list="{{ stages }}" as="s" hint-placeholder-count="3">
+<div data-rail style="display:grid;grid-template-columns:84px 1.15fr 1fr;gap:clamp(22px,3vw,48px);padding:clamp(34px,4vw,58px) 0;position:relative" data-reveal>
+<div data-el="stage-mhead" style="display:none;align-items:center;gap:12px">
+<span style="font:400 11px/1 'Geist Mono',monospace;letter-spacing:.16em;color:{{ s.numColor }}">{{ s.num }}</span>
+<span style="width:7px;height:7px;background:{{ s.nodeBg }};border:1px solid {{ s.nodeLine }};display:block;flex:none"></span>
+<span style="font:400 11px/1 'Geist Mono',monospace;letter-spacing:.22em;text-transform:uppercase;color:#F3F4F7">{{ s.name }}</span>
+</div>
+<div data-el="stage-rail" style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;position:relative;z-index:2">
+<span style="font:400 10px/11px 'Geist Mono',monospace;letter-spacing:.16em;color:{{ s.numColor }}">{{ s.num }}</span>
+<span style="width:11px;height:11px;background:{{ s.nodeBg }};border:1px solid {{ s.nodeLine }};display:block;flex:none"></span>
+</div>
+<div>
+<div data-el="stage-name" style="font:400 11px/1 'Geist Mono',monospace;letter-spacing:.22em;color:{{ s.numColor }};text-transform:uppercase">{{ s.name }}</div>
+<h3 style="margin:16px 0 0;font:200 clamp(24px,2.7vw,40px)/1.08 'Geist',sans-serif;letter-spacing:-.04em;color:#F3F4F7">{{ s.headline }}</h3>
+<p style="margin:20px 0 0;font:300 14.5px/1.72 'Geist',sans-serif;color:#9AA1B4;max-width:46ch;text-wrap:pretty">{{ s.desc }}</p>
+<div style="font:400 11px/1 'Geist Mono',monospace;letter-spacing:.12em;color:#8A90A2;margin-top:22px;line-height:1.7">{{ s.foot }}</div>
+</div>
+<div>
+<div data-el="deliv-head" style="display:flex;align-items:baseline;justify-content:space-between;gap:16px;padding-bottom:6px;flex-wrap:wrap">
+<span style="font:400 11px/1 'Geist Mono',monospace;letter-spacing:.2em;color:#8A90A2;text-transform:uppercase">Deliverables</span>
+<span style="font:400 11px/1 'Geist Mono',monospace;letter-spacing:.16em;color:{{ s.numColor }};white-space:nowrap">{{ s.sub }}</span>
+</div>
+<div style="display:flex;flex-direction:column">
+<sc-for list="{{ s.items }}" as="it" hint-placeholder-count="5">
+<span style="display:flex;gap:14px;align-items:baseline;padding:11px 0;border-top:1px solid rgba(255,255,255,.085)">
+<span style="width:8px;height:1px;background:{{ s.nodeLine }};display:block;flex:none;transform:translateY(-4px)"></span>
+<span data-el="deliv-item" style="font:400 12.5px/1.55 'Geist',sans-serif;color:#F3F4F7">{{ it }}</span>
+</span>
+</sc-for>
+</div>
+</div>
+</div>
+</sc-for>
+<div data-rail style="display:grid;grid-template-columns:84px 1fr;gap:clamp(22px,3vw,48px);padding:clamp(32px,3.6vw,52px) 0 clamp(6px,1vw,12px);border-top:1px solid rgba(150,172,230,.16);position:relative">
+<span data-el="stage-rail" style="width:11px;height:11px;background:#3E68E8;display:block;margin-left:73px;position:relative;z-index:2"></span>
+<div style="display:flex;align-items:baseline;justify-content:space-between;gap:32px;flex-wrap:wrap">
+<span style="font:300 clamp(18px,1.9vw,26px)/1.3 'Geist',sans-serif;letter-spacing:-.026em;color:#F3F4F7;max-width:34ch">It all starts with the audit. Everything after it is shaped by what we find there.</span>
+<a href="Contact.dc.html" style="display:inline-flex;align-items:center;justify-content:center;gap:14px;font:400 13px/1 'Geist Mono',monospace;letter-spacing:.16em;text-transform:uppercase;color:#F3F4F7;background:#3E68E8;border:1px solid #3E68E8;border-radius:2px;padding:19px 26px;white-space:nowrap;transition:background .2s,border-color .2s" style-hover="background:#5A80F0;border-color:#5A80F0"><span>Book the audit</span><span>→</span></a>
+</div>
+</div>
+</div>
+</section>
+
+<section style="padding:clamp(90px,12vw,170px) 0 0">
+<div style="display:grid;grid-template-columns:repeat(12,1fr);gap:28px;align-items:baseline;padding-bottom:clamp(30px,4vw,54px)">
+<span style="grid-column:1 / span 1;font:200 clamp(24px,2.2vw,34px)/1 'Geist',sans-serif;letter-spacing:-.03em;color:#7A9BF5">01</span>
+<h2 style="grid-column:2 / span 7;margin:0;font:200 clamp(34px,4.6vw,66px)/1.02 'Geist',sans-serif;letter-spacing:-.042em">Model the outcome first</h2>
+<p style="grid-column:10 / span 3;margin:0;font:400 14px/1.62 'Geist',sans-serif;color:#A8AEBE">Move the sliders. The model applies a conservative 20% reduction — the low end of what operators report.</p>
+</div>
+<div style="display:grid;grid-template-columns:repeat(12,1fr);gap:28px;border-top:1px solid rgba(150,172,230,.16);padding-top:clamp(28px,3vw,44px)">
+<div style="grid-column:1 / span 5;display:flex;flex-direction:column;gap:clamp(26px,3vw,40px)">
+<sc-for list="{{ sliders }}" as="s" hint-placeholder-count="3">
+<div>
+<div style="display:flex;align-items:baseline;justify-content:space-between;gap:14px">
+<span style="font:400 11px/1 'Geist Mono',monospace;letter-spacing:.22em;text-transform:uppercase;color:#9AA1B4">{{ s.label }}</span>
+<span style="font:200 clamp(22px,2.2vw,30px)/1 'Geist',sans-serif;letter-spacing:-.035em;font-variant-numeric:tabular-nums">{{ s.display }}</span>
+</div>
+<input type="range" min="{{ s.min }}" max="{{ s.max }}" step="{{ s.step }}" value="{{ s.value }}" onChange="{{ s.change }}" style="width:100%;margin-top:18px;display:block">
+<div style="display:flex;justify-content:space-between;margin-top:10px"><span style="font:400 11px/1 'Geist Mono',monospace;letter-spacing:.12em;color:#8A90A2">{{ s.minLabel }}</span><span style="font:400 11px/1 'Geist Mono',monospace;letter-spacing:.12em;color:#8A90A2">{{ s.maxLabel }}</span></div>
+</div>
+</sc-for>
+</div>
+<div style="grid-column:7 / span 6">
+<div style="font:400 11px/1 'Geist Mono',monospace;letter-spacing:.24em;text-transform:uppercase;color:#9AA1B4">Modelled annual saving</div>
+<div data-fig="save" style="font:200 clamp(64px,9.5vw,148px)/0.86 'Geist',sans-serif;letter-spacing:-.055em;margin-top:18px;font-variant-numeric:tabular-nums;color:#F3F4F7">{{ saving }}</div>
+<div data-cols2 style="display:grid;grid-template-columns:1fr 1fr;margin-top:clamp(28px,3vw,44px);border-top:1px solid rgba(150,172,230,.16)">
+<div style="padding:22px 24px 22px 0">
+<div style="font:400 11px/1 'Geist Mono',monospace;letter-spacing:.2em;text-transform:uppercase;color:#8A90A2">Hours returned / yr</div>
+<div style="font:200 clamp(28px,2.9vw,40px)/1 'Geist',sans-serif;letter-spacing:-.04em;margin-top:14px;color:#7A9BF5;font-variant-numeric:tabular-nums">{{ hours }}</div>
+</div>
+<div style="padding:22px 0 22px 24px;border-left:1px solid rgba(150,172,230,.16)">
+<div style="font:400 11px/1 'Geist Mono',monospace;letter-spacing:.2em;text-transform:uppercase;color:#8A90A2">Addressable spend</div>
+<div style="font:200 clamp(28px,2.9vw,40px)/1 'Geist',sans-serif;letter-spacing:-.04em;margin-top:14px;font-variant-numeric:tabular-nums">{{ addressable }}</div>
+</div>
+</div>
+<div style="font:400 11px/1.8 'Geist Mono',monospace;letter-spacing:.08em;color:#8A90A2;margin-top:22px;border-top:1px solid rgba(255,255,255,.085);padding-top:18px">MODEL: STAFF × MANUAL HOURS × 46 WORKING WEEKS AT A $70/H LOADED RATE, CAPPED BY OPERATING SPEND · 60% OF THAT WORK AUTOMATED (CONSERVATIVE) · ILLUSTRATIVE MODEL, NOT A COMMITMENT</div>
+</div>
+</div>
+</section>
+
+<section style="padding:clamp(90px,12vw,170px) 0 0">
+<div style="display:flex;align-items:baseline;justify-content:space-between;gap:24px;flex-wrap:wrap;padding-bottom:22px">
+<span style="font:400 11px/1 'Geist Mono',monospace;letter-spacing:.24em;text-transform:uppercase;color:#9AA1B4">In every engagement</span>
+<span style="font:400 11px/1 'Geist Mono',monospace;letter-spacing:.2em;color:#8A90A2">NO EXCEPTIONS</span>
+</div>
+<div style="display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid rgba(150,172,230,.16)">
+<sc-for list="{{ included }}" as="i" hint-placeholder-count="8">
+<div style="padding:24px 22px;border-bottom:1px solid rgba(255,255,255,.085);border-left:1px solid rgba(255,255,255,.085);transition:background .3s" style-hover="background:rgba(62,104,232,.06)">
+<div style="font:400 11px/1 'Geist Mono',monospace;letter-spacing:.18em;color:#7A9BF5">{{ i.tag }}</div>
+<div style="font:400 13.5px/1.4 'Geist',sans-serif;letter-spacing:-.016em;margin-top:14px">{{ i.title }}</div>
+</div>
+</sc-for>
+</div>
+</section>
+</div>
+
+<section style="margin-top:clamp(90px,12vw,170px);border-top:1px solid rgba(150,172,230,.16);position:relative;overflow:hidden">
+<div style="position:absolute;right:-6%;bottom:-320px;width:900px;height:640px;pointer-events:none;background:radial-gradient(50% 50% at 50% 50%,rgba(62,104,232,.2),transparent 70%)"></div>
+<div style="max-width:1440px;margin:0 auto;padding:clamp(70px,9vw,130px) clamp(24px,5vw,80px);position:relative;display:grid;grid-template-columns:repeat(12,1fr);gap:28px;align-items:end">
+<h2 style="grid-column:1 / span 8;margin:0;font:200 clamp(36px,5.6vw,86px)/0.99 'Geist',sans-serif;letter-spacing:-.05em">Stage one is an audit, and it is not a sales call.</h2>
+<div style="grid-column:10 / span 3;display:flex;flex-direction:column;align-items:flex-start;gap:18px">
+<a href="Contact.dc.html" style="display:inline-flex;align-items:center;justify-content:center;gap:14px;font:400 13px/1 'Geist Mono',monospace;letter-spacing:.16em;text-transform:uppercase;color:#F3F4F7;background:#3E68E8;border:1px solid #3E68E8;border-radius:2px;padding:19px 26px;white-space:nowrap;transition:background .2s,border-color .2s" style-hover="background:#5A80F0;border-color:#5A80F0"><span>Book a consultation</span><span>→</span></a>
+<span style="font:400 11px/1.8 'Geist Mono',monospace;letter-spacing:.1em;color:#8A90A2">SCOPED PER ENGAGEMENT · WORLDWIDE DELIVERY</span>
+</div>
+</div>
+</section>
+</main>
+
+<footer style="border-top:1px solid rgba(150,172,230,.16);position:relative;z-index:2">
+<div data-el="foot" style="max-width:1280px;margin:0 auto;padding:clamp(52px,6.5vw,92px) clamp(24px,5vw,64px) clamp(40px,4.6vw,60px);display:grid;grid-template-columns:minmax(0,1.7fr) repeat(3,minmax(0,1fr));gap:clamp(32px,4vw,64px);align-items:start">
+<div style="display:flex;flex-direction:column;align-items:flex-start;gap:22px">
+<img src="uploads/logo.png" alt="AI Pipeline" width="1060" height="280" style="height:26px;width:98.4px;display:block;object-fit:contain;flex:none">
+<p style="margin:0;max-width:32ch;font:400 14px/1.7 'Geist',sans-serif;color:#A8AEBE;text-wrap:pretty">Operational intelligence for the energy industry — we turn complex operations into automated, intelligent workflows.</p>
+<a href="Contact.dc.html" style="display:inline-flex;align-items:center;justify-content:center;margin-top:4px;font:400 12.5px/1 'Geist Mono',monospace;letter-spacing:.16em;text-transform:uppercase;color:#F3F4F7;background:#3E68E8;border:1px solid #3E68E8;border-radius:2px;padding:17px 24px;white-space:nowrap;transition:background .2s,border-color .2s" style-hover="background:#5A80F0;border-color:#5A80F0">Book a consultation</a>
+</div>
+<div data-el="footcol" style="display:flex;flex-direction:column;align-items:flex-start;gap:0">
+<span style="font:400 11px/1 'Geist Mono',monospace;letter-spacing:.2em;text-transform:uppercase;color:#8A90A2;padding-bottom:20px">Solutions</span>
+<a href="About.dc.html" style="font:400 14px/1 'Geist',sans-serif;color:#A8AEBE;padding:13px 0;transition:color .18s" style-hover="color:#F3F4F7">Practice</a>
+<a href="Pricing.dc.html" style="font:400 14px/1 'Geist',sans-serif;color:#A8AEBE;padding:13px 0;transition:color .18s" style-hover="color:#F3F4F7">Engagements</a>
+<a href="index.html#systems" style="font:400 14px/1 'Geist',sans-serif;color:#A8AEBE;padding:13px 0;transition:color .18s" style-hover="color:#F3F4F7">Live systems</a>
+<a href="Blog.dc.html" style="font:400 14px/1 'Geist',sans-serif;color:#A8AEBE;padding:13px 0;transition:color .18s" style-hover="color:#F3F4F7">Field notes</a>
+</div>
+<div data-el="footcol" style="display:flex;flex-direction:column;align-items:flex-start;gap:0">
+<span style="font:400 11px/1 'Geist Mono',monospace;letter-spacing:.2em;text-transform:uppercase;color:#8A90A2;padding-bottom:20px">Company</span>
+<a href="index.html" style="font:400 14px/1 'Geist',sans-serif;color:#A8AEBE;padding:13px 0;transition:color .18s" style-hover="color:#F3F4F7">Index</a>
+<a href="About.dc.html" style="font:400 14px/1 'Geist',sans-serif;color:#A8AEBE;padding:13px 0;transition:color .18s" style-hover="color:#F3F4F7">About</a>
+<a href="Blog.dc.html" style="font:400 14px/1 'Geist',sans-serif;color:#A8AEBE;padding:13px 0;transition:color .18s" style-hover="color:#F3F4F7">Notes</a>
+<a href="Contact.dc.html" style="font:400 14px/1 'Geist',sans-serif;color:#A8AEBE;padding:13px 0;transition:color .18s" style-hover="color:#F3F4F7">Contact</a>
+<a href="https://aipipelineportal.ca/" style="font:400 14px/1 'Geist',sans-serif;color:#A8AEBE;padding:13px 0;transition:color .18s" style-hover="color:#F3F4F7">Client portal</a>
+</div>
+<div data-el="footcol" style="display:flex;flex-direction:column;align-items:flex-start;gap:0">
+<span style="font:400 11px/1 'Geist Mono',monospace;letter-spacing:.2em;text-transform:uppercase;color:#8A90A2;padding-bottom:20px">Contact</span>
+<a href="mailto:contact@aipipeline.ca" style="font:400 13px/1 'Geist Mono',monospace;letter-spacing:.01em;color:#A8AEBE;padding:13px 0;transition:color .18s" style-hover="color:#7A9BF5">contact@aipipeline.ca</a>
+<a href="mailto:support@aipipeline.ca" style="font:400 13px/1 'Geist Mono',monospace;letter-spacing:.01em;color:#A8AEBE;padding:13px 0;transition:color .18s" style-hover="color:#7A9BF5">support@aipipeline.ca</a>
+<a href="mailto:billing@aipipeline.ca" style="font:400 13px/1 'Geist Mono',monospace;letter-spacing:.01em;color:#A8AEBE;padding:13px 0;transition:color .18s" style-hover="color:#7A9BF5">billing@aipipeline.ca</a>
+</div>
+</div>
+<div style="border-top:1px solid rgba(150,172,230,.16)">
+<div data-el="footbar" style="max-width:1280px;margin:0 auto;padding:24px clamp(24px,5vw,64px);display:flex;align-items:baseline;justify-content:space-between;gap:20px;flex-wrap:wrap">
+<span style="font:400 11.5px/1.4 'Geist Mono',monospace;letter-spacing:.1em;color:#8A90A2">© AI Pipeline 2026. All rights reserved.</span>
+<span style="display:flex;gap:28px;flex-wrap:wrap">
+<a href="Contact.dc.html" style="font:400 11.5px/1.4 'Geist Mono',monospace;letter-spacing:.1em;text-transform:uppercase;color:#8A90A2;transition:color .18s" style-hover="color:#F3F4F7">Privacy policy</a>
+<a href="Contact.dc.html" style="font:400 11.5px/1.4 'Geist Mono',monospace;letter-spacing:.1em;text-transform:uppercase;color:#8A90A2;transition:color .18s" style-hover="color:#F3F4F7">Terms</a>
+</span>
+</div>
+</div>
+</footer>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state={mode:"retainer",spend:48,people:14,hours:9};
+  componentDidMount(){
+    const reduce=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const reveal=()=>document.querySelectorAll("[data-reveal]").forEach(el=>el.setAttribute("data-reveal","in"));
+    if(reduce||!("IntersectionObserver" in window)){reveal();return;}
+    this._io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.setAttribute("data-reveal","in");this._io.unobserve(e.target);}}),{rootMargin:"0px 0px -8% 0px"});
+    const attach=()=>document.querySelectorAll('[data-reveal]:not([data-reveal="in"])').forEach(el=>this._io.observe(el));
+    attach(); this._t=setTimeout(attach,400); this._safety=setTimeout(reveal,2600);
+  }
+  componentWillUnmount(){clearTimeout(this._t);clearTimeout(this._safety);if(this._io)this._io.disconnect();}
+  fmt(n){
+    if(n>=1000000) return "$"+(n/1000000).toFixed(1)+"M";
+    if(n>=1000) return "$"+Math.round(n/1000)+"K";
+    return "$"+Math.round(n);
+  }
+  renderVals(){
+    const S=this.state;
+    // transparent model: manual labour drives the saving, operating spend caps it
+    const WORKING_WEEKS=46, LOADED_RATE=70, AUTOMATION_RATE=0.60;
+    const hoursBack=Math.round(S.people*S.hours*WORKING_WEEKS);
+    const laborCost=hoursBack*LOADED_RATE;
+    const addressable=Math.min(laborCost,S.spend*1000000);
+    const saving=addressable*AUTOMATION_RATE;
+
+    const stages=[
+      {num:"01",name:"Audit",headline:"The 15-minute operations audit",sub:"NO OBLIGATION",
+       desc:"A focused audit of how your operation runs. Every hour mapped, ranked, and costed against your own numbers. Nothing is built — you walk away with a clear target and the business case to act on it.",
+       items:["15-minute operations audit to open","Ranked workflow inventory","Hour and dollar cost per workflow","One target metric for the engagement","Go / no-go recommendation, no sequence"],
+       foot:"TYPICALLY BOOKED WITHIN 3 BUSINESS DAYS",
+       nodeBg:"#3E68E8",nodeLine:"#3E68E8",numColor:"#7A9BF5"},
+      {num:"02",name:"Pilot build",headline:"One workflow, shipped and measured",sub:"SCOPED PER ENGAGEMENT",
+       desc:"One workflow, one crew, production data, real users. Shipped in short increments and judged on the single metric agreed in the audit — not on a feature list.",
+       items:["Dedicated engineering pod","Read-first integration to your stack","Continuous deployment and review","Measured before / after on the metric","A person approves every automated output","Source and documentation handed over"],
+       foot:"A WORKING SYSTEM IN A CREW'S HANDS",
+       nodeBg:"#0B0D14",nodeLine:"rgba(62,104,232,.65)",numColor:"#9AA1B4"},
+      {num:"03",name:"Fleet rollout",headline:"Every site, on the same system",sub:"SCALE",
+       desc:"The proven pilot goes out across rigs, districts, or plants. Training is built into the shift pattern rather than bolted on, and adoption is tracked per site so the ones that lag get attention instead of a reminder email.",
+       items:["Multi-site rollout with adoption data","Training built into the shift pattern","Runbooks and escalation paths","Audit trail configured for your regulator","Named support with response SLAs"],
+       foot:"SCOPED AFTER A SUCCESSFUL PILOT",
+       nodeBg:"#0B0D14",nodeLine:"rgba(122,155,245,.5)",numColor:"#9AA1B4"},
+      {num:"04",name:"Optimize",headline:"Continuously tuned on your own history",sub:"OPTIMIZE",
+       desc:"Models drift, contracts change, regulations move. We monitor performance, retrain on the history the system is now accumulating, and extend into the next workflow on the list from the audit.",
+       items:["Quarterly performance and drift review","Continuous retraining on your history","Next workflow scoped and queued","Deployment into your own cloud tenancy","Source and models remain yours"],
+       foot:"ONGOING · REVIEWED EVERY QUARTER",
+       nodeBg:"#0B0D14",nodeLine:"rgba(255,255,255,.3)",numColor:"#9AA1B4"}
+    ];
+
+    const mk=(key,label,min,max,step,value,display,minLabel,maxLabel)=>({
+      label,min,max,step,value,display,minLabel,maxLabel,
+      change:(e)=>this.setState({[key]:Number(e.target.value)})});
+
+    return {
+      menuOpen:!!this.state.menu,
+      menuLabel:this.state.menu?"Close":"Menu",
+      toggleMenu:()=>this.setState(st=>({menu:!st.menu})),
+      stages,
+      sliders:[
+        mk("spend","Annual operating spend",0.5,400,0.5,S.spend,
+           S.spend<1?"$"+Math.round(S.spend*1000)+"K":"$"+(S.spend%1?S.spend.toFixed(1):S.spend)+"M",
+           "$500K","$400M"),
+        mk("people","People on manual reporting",2,120,1,S.people,S.people+" staff","2","120"),
+        mk("hours","Manual hours each / week",2,25,1,S.hours,S.hours+" h/wk","2 h","25 h")
+      ],
+      saving:this.fmt(saving),
+      hours:hoursBack.toLocaleString()+" h",
+      addressable:this.fmt(addressable),
+      included:[
+        {tag:"SEC-01",title:"Least-privilege access, fully audited"},
+        {tag:"SEC-02",title:"Canada Central data residency"},
+        {tag:"OPS-01",title:"Runbooks and escalation paths"},
+        {tag:"OPS-02",title:"Training inside the shift pattern"},
+        {tag:"GOV-01",title:"Model version and approver on every output"},
+        {tag:"GOV-02",title:"Regulator-ready audit trail"},
+        {tag:"OWN-01",title:"Source and models handed over"},
+        {tag:"OWN-02",title:"No hostage architecture"}
+      ]
+    };
+  }
+}
+
+</script>
+</body>
+</html>
