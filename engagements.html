@@ -1045,5 +1045,175 @@ window.addEventListener('resize', function(){ apply(); }, {passive:true});
 window.addEventListener('orientationchange', function(){ setTimeout(apply, 120); });
 })();
 </script><!-- ap-hero:end -->
+<!-- ap-grid:begin --><script>
+/* ============================================================
+   AI PIPELINE - MOBILE GUTTER
+   Several rows are two column grids with a fixed label column:
+   the stage rows on engagements are 64px + 262px, the security
+   rows 78px + 248px, the practice cards 52px + 282px. On a wide
+   screen that reads as a proper label column. On a phone the
+   label is one short word and the column becomes a dead band down
+   the left of every row, with the body text jammed into what is
+   left of a 390px screen.
+
+   Below 1024px those rows collapse to one column, so the label sits
+   on its own line and the text runs the full width. Only that shape
+   is touched: a narrow bullet column (under 30px) is a bullet, not a
+   gutter, and anything wider than 96px is a real two up layout, so
+   both are left alone. Above 1024px nothing is changed at all.
+   ============================================================ */
+(function(){
+if (window.__AP_GRID__) return; window.__AP_GRID__ = 1;
+
+var BP  = '(max-width: 1023px)';
+var mq  = window.matchMedia ? window.matchMedia(BP) : null;
+var MIN = 30, MAX = 96;              /* the band that counts as a label column */
+function isMobile(){ return mq ? mq.matches : (window.innerWidth <= 1023); }
+
+function px(v){ var n = parseFloat(v); return isNaN(n) ? null : n; }
+
+function apply(){
+  var mobile = isMobile();
+  var main = document.querySelector('main'); if (!main) return;
+  var all = main.querySelectorAll('*');
+
+  for (var i = 0; i < all.length; i++){
+    var el = all[i];
+    var flagged = el.hasAttribute('data-ap-grid');
+
+    if (!mobile){
+      if (flagged){
+        el.style.removeProperty('grid-template-columns');
+        el.style.removeProperty('row-gap');
+        for (var d = 0; d < el.children.length; d++) el.children[d].style.removeProperty('grid-column');
+        el.removeAttribute('data-ap-grid');
+      }
+      continue;
+    }
+    /* The runtime rewrites the style attribute wholesale, which drops our
+       declaration while leaving the marker attribute behind. So the marker is
+       not proof of anything: check the live style and re-apply if it is gone. */
+    if (flagged && el.style.getPropertyPriority('grid-template-columns') === 'important') continue;
+
+    var cs = getComputedStyle(el);
+    if (cs.display !== 'grid' && cs.display !== 'inline-grid') continue;
+
+    var cols = cs.gridTemplateColumns.split(' ').filter(Boolean);
+    if (cols.length !== 2) continue;               /* only the clean label + body shape */
+
+    var first = px(cols[0]); if (first === null) continue;
+    if (first < MIN || first > MAX) continue;      /* a bullet, or a real two up layout */
+
+    var body = px(cols[1]);
+    if (body !== null && body <= first) continue;  /* not a label column at all */
+
+    el.setAttribute('data-ap-grid','1');
+    el.style.setProperty('grid-template-columns','minmax(0,1fr)','important');
+    if (px(cs.rowGap) < 6) el.style.setProperty('row-gap','8px','important');
+    /* The children carry explicit grid-column placements, so collapsing the
+       template alone would leave the body pinned to a phantom second track. */
+    for (var c2 = 0; c2 < el.children.length; c2++)
+      el.children[c2].style.setProperty('grid-column','1 / -1','important');
+  }
+}
+
+apply();
+document.addEventListener('DOMContentLoaded', apply);
+window.addEventListener('load', apply);
+[60,200,500,1000,1800,3000,4500].forEach(function(t){ setTimeout(apply, t); });
+var q = null;
+try{
+  new MutationObserver(function(){
+    if (q) return;
+    q = setTimeout(function(){ q = null; apply(); }, 80);
+  }).observe(document.documentElement, {childList:true, subtree:true});
+}catch(e){}
+if (mq){
+  if (mq.addEventListener) mq.addEventListener('change', apply);
+  else if (mq.addListener) mq.addListener(apply);
+}
+window.addEventListener('resize', function(){ apply(); }, {passive:true});
+})();
+</script><!-- ap-grid:end -->
+<!-- ap-type:begin --><script>
+/* ============================================================
+   AI PIPELINE - TITLE SIZE
+   The page titles were authored per page and had drifted badly:
+   at 1440 they measured 70, 104, 34, 109 and 72 pixels. This pins
+   every page's h1 to one fluid ramp so they read as one set.
+
+   The size is written as an inline !important because several of
+   these pages carry their own !important rules that a stylesheet
+   of ours cannot outrank. Nothing else about the headline changes:
+   same face, same weight, same colour, same copy, same accent word.
+   The floor is 30px, which is what every page already computed to
+   on a phone, so mobile is left where it was.
+   ============================================================ */
+(function(){
+if (window.__AP_TYPE__) return; window.__AP_TYPE__ = 1;
+
+var SIZE = 'clamp(30px, 5.1vw, 76px)';
+var LH   = '0.95';
+var LS   = '-0.05em';
+
+function pin(){
+  var h1 = document.querySelector('main h1') || document.querySelector('h1');
+  if (!h1 || h1.closest('header,[data-nav="panel"]')) return;
+  if (h1.style.getPropertyPriority('font-size') === 'important') return;
+  h1.style.setProperty('font-size', SIZE, 'important');
+  h1.style.setProperty('line-height', LH, 'important');
+  h1.style.setProperty('letter-spacing', LS, 'important');
+  /* a hard max-width authored for the old size would re-break the lines */
+  var mw = getComputedStyle(h1).maxWidth;
+  if (mw && mw !== 'none' && mw.indexOf('%') === -1) h1.style.setProperty('max-width','none','important');
+}
+
+/* ---------------------------------------------------------------
+   The eyebrow above the headline carries a small blue marker on
+   every page except Field Notes, where it was authored as a plain
+   line of text. This adds the same 5px marker, with the same colour
+   and the same blip animation the other pages already use, so the
+   set matches.
+   --------------------------------------------------------------- */
+function dot(){
+  var h1 = document.querySelector('main h1') || document.querySelector('h1');
+  if (!h1 || h1.closest('header,[data-nav="panel"]')) return;
+
+  var eb = h1.previousElementSibling;
+  if (!eb && h1.parentElement) eb = h1.parentElement.previousElementSibling;
+  if (!eb || eb.tagName === 'H1') return;
+  if (eb.querySelector('[data-ap-dot]')) return;
+  if (eb.children.length) return;                 /* it already has a marker */
+
+  var cs = getComputedStyle(eb);
+  if (cs.textTransform !== 'uppercase') return;   /* not the eyebrow */
+  var txt = (eb.textContent || '').trim();
+  if (!txt || txt.length > 34) return;
+
+  var d = document.createElement('span');
+  d.setAttribute('data-ap-dot','1');
+  d.style.cssText = 'width:5px;height:5px;background:#3E68E8;display:block;flex:none;' +
+                    'animation:blip 2.6s ease infinite';
+  eb.style.setProperty('display','flex','important');
+  eb.style.setProperty('align-items','center','important');
+  eb.style.setProperty('gap','11px','important');
+  eb.insertBefore(d, eb.firstChild);
+}
+
+function run(){ pin(); dot(); }
+
+run();
+document.addEventListener('DOMContentLoaded', run);
+window.addEventListener('load', run);
+[60,200,500,1000,1800,3000,4500].forEach(function(t){ setTimeout(run, t); });
+try{
+  var q = null;
+  new MutationObserver(function(){
+    if (q) return;
+    q = setTimeout(function(){ q = null; run(); }, 60);
+  }).observe(document.documentElement, {childList:true, subtree:true});
+}catch(e){}
+})();
+</script><!-- ap-type:end -->
 </body>
 </html>
