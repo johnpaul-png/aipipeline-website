@@ -1157,22 +1157,31 @@ function dot(){
   var eb = h1.previousElementSibling;
   if (!eb && h1.parentElement) eb = h1.parentElement.previousElementSibling;
   if (!eb || eb.tagName === 'H1') return;
-  if (eb.querySelector('[data-ap-dot]')) return;
-  if (eb.children.length) return;                 /* it already has a marker */
 
-  var cs = getComputedStyle(eb);
-  if (cs.textTransform !== 'uppercase') return;   /* not the eyebrow */
-  var txt = (eb.textContent || '').trim();
-  if (!txt || txt.length > 34) return;
+  var have = eb.querySelector('[data-ap-dot]');
 
-  var d = document.createElement('span');
-  d.setAttribute('data-ap-dot','1');
-  d.style.cssText = 'width:5px;height:5px;background:#3E68E8;display:block;flex:none;' +
-                    'animation:blip 2.6s ease infinite';
-  eb.style.setProperty('display','flex','important');
-  eb.style.setProperty('align-items','center','important');
-  eb.style.setProperty('gap','11px','important');
-  eb.insertBefore(d, eb.firstChild);
+  if (!have){
+    if (eb.children.length) return;               /* it already has a marker */
+    var cs = getComputedStyle(eb);
+    if (cs.textTransform !== 'uppercase') return; /* not the eyebrow */
+    var txt = (eb.textContent || '').trim();
+    if (!txt || txt.length > 34) return;
+
+    have = document.createElement('span');
+    have.setAttribute('data-ap-dot','1');
+    have.style.cssText = 'width:5px;height:5px;background:#3E68E8;display:block;flex:none;' +
+                         'animation:blip 2.6s ease infinite';
+    eb.insertBefore(have, eb.firstChild);
+  }
+
+  /* The runtime rewrites the style attribute wholesale, which drops the row
+     layout while leaving the marker behind, and the marker ends up stranded
+     on a line of its own. So re-assert the row every pass, not just on insert. */
+  if (eb.style.getPropertyPriority('display') !== 'important'){
+    eb.style.setProperty('display','flex','important');
+    eb.style.setProperty('align-items','center','important');
+    eb.style.setProperty('gap','11px','important');
+  }
 }
 
 function run(){ pin(); dot(); }
