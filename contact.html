@@ -1199,5 +1199,216 @@ try{
 }catch(e){}
 })();
 </script><!-- ap-type:end -->
+<!-- ap-fix:begin --><script>
+/* ============================================================
+   AI PIPELINE - MOBILE SPACING AND LAYOUT FIXES
+   Mobile only (<=1023px). Desktop is not touched.
+
+   1. Hero: one gap between the headline and the paragraph under
+      it on every page. They were 24, 24, 38 and 20 pixels.
+   2. Narrow twin-column grids that hold prose: at 390px the
+      systems panels sat in a 169px + 169px grid, so an expanded
+      panel was wider than its cell and its blue background was
+      clipped by the section. Those collapse to one column, and
+      the one-sided padding inside them is squared up.
+   3. Stacked button rows: equal width, a real gap between them.
+   4. A block that follows a button row gets clear separation
+      instead of touching it.
+   ============================================================ */
+(function(){
+if (window.__AP_FIX__) return; window.__AP_FIX__ = 1;
+
+var BP = '(max-width: 1023px)';
+var mq = window.matchMedia ? window.matchMedia(BP) : null;
+function isMobile(){ return mq ? mq.matches : (window.innerWidth <= 1023); }
+function px(v){ var n = parseFloat(v); return isNaN(n) ? 0 : n; }
+function imp(el, prop, val){
+  if (el.style.getPropertyValue(prop) !== val ||
+      el.style.getPropertyPriority(prop) !== 'important')
+    el.style.setProperty(prop, val, 'important');
+}
+
+var HERO_GAP = 26;
+
+/* ---------- 1. the headline to lede gap ---------- */
+function heroGap(sec){
+  var h1 = document.querySelector('main h1'); if (!h1) return;
+  var host = document.querySelector('.aph-stage') || h1.closest('section');
+  if (!host) return;
+  var hb = h1.getBoundingClientRect();
+  if (hb.height < 1) return;
+
+  var lede = null, all = host.querySelectorAll('p,div');
+  for (var i = 0; i < all.length; i++){
+    var e = all[i];
+    if (e.contains(h1) || h1.contains(e)) continue;
+    if (e.classList.contains('aph-cta') || e.querySelector('.aph-cta')) continue;
+    var t = (e.textContent || '').trim();
+    if (t.length < 60) continue;
+    var r = e.getBoundingClientRect();
+    if (r.top < hb.bottom - 1) continue;
+    if (!lede || r.top < lede.getBoundingClientRect().top) lede = e;
+  }
+  if (!lede) return;
+  /* only when the two actually sit together, not with a spec rail between */
+  var cur = lede.getBoundingClientRect().top - hb.bottom;
+  if (cur > 160) return;
+  if (Math.abs(cur - HERO_GAP) <= 1) return;
+
+  /* Margins from three different wrappers stack up between these two, and they
+     differ per page. Rather than guess at each one, measure the real distance
+     and correct the lede's own margin by the difference. It converges in a
+     pass or two and then stops writing, so the observer settles. */
+  var mt = px(getComputedStyle(lede).marginTop);
+  var want = mt + (HERO_GAP - cur);
+  if (want < 0){
+    /* the stack is already wider than the target: flatten what sits above */
+    var host = h1.parentElement;
+    while (host && host !== document.body && !host.classList.contains('aph-stage')){
+      if (px(getComputedStyle(host).marginBottom) > 0) imp(host, 'margin-bottom', '0px');
+      host = host.parentElement;
+    }
+    want = 0;
+  }
+  imp(h1, 'margin-bottom', '0px');
+  imp(lede, 'margin-top', Math.round(want) + 'px');
+}
+
+/* ---------- 2. narrow twin columns holding prose ---------- */
+function proseGrid(){
+  var main = document.querySelector('main'); if (!main) return;
+  var all = main.querySelectorAll('*');
+  for (var i = 0; i < all.length; i++){
+    var el = all[i], cs = getComputedStyle(el);
+    if (cs.display !== 'grid' && cs.display !== 'inline-grid') continue;
+    if (el.hasAttribute('data-ap-grid')) continue;          /* the label-column fix owns this one */
+
+    var cols = cs.gridTemplateColumns.split(' ').filter(Boolean);
+    if (cols.length < 2) continue;
+
+    var widest = 0, ok = true;
+    for (var c = 0; c < cols.length; c++){
+      var w = px(cols[c]);
+      if (!w){ ok = false; break; }
+      if (w > widest) widest = w;
+    }
+    if (!ok || widest > 200) continue;                      /* wide enough to read in */
+
+    var long = false, kids = el.querySelectorAll('*');
+    for (var k = 0; k < kids.length; k++){
+      if (!kids[k].children.length && (kids[k].textContent || '').trim().length > 80){ long = true; break; }
+    }
+    if (!long) continue;                                    /* short tiles are fine side by side */
+
+    el.setAttribute('data-ap-prose','1');
+    imp(el, 'grid-template-columns', 'minmax(0,1fr)');
+    if (px(cs.rowGap) < 10) imp(el, 'row-gap', '12px');
+  }
+
+  /* square up the one-sided padding inside those panels */
+  var panels = main.querySelectorAll('[data-ap-prose] *');
+  for (var p = 0; p < panels.length; p++){
+    var q = panels[p], qs = getComputedStyle(q);
+    var pl = px(qs.paddingLeft), pr = px(qs.paddingRight);
+    if (pl >= 14 && pr < 4) imp(q, 'padding-right', Math.round(pl) + 'px');
+  }
+}
+
+/* ---------- 3 and 4. stacked buttons, and what follows them ---------- */
+function buttonRows(){
+  var main = document.querySelector('main'); if (!main) return;
+  var btns = main.querySelectorAll('a.cta, button.cta, a.cta-ghost, button.cta-ghost');
+  var rows = [];
+  for (var i = 0; i < btns.length; i++){
+    var par = btns[i].parentElement;
+    if (!par || par.classList.contains('aph-cta')) continue;
+    if (rows.indexOf(par) === -1) rows.push(par);
+  }
+  for (var r = 0; r < rows.length; r++){
+    var row = rows[r];
+    var inRow = row.querySelectorAll(':scope > a.cta, :scope > button.cta, :scope > a.cta-ghost, :scope > button.cta-ghost');
+    if (inRow.length < 2) continue;
+
+    var a = inRow[0].getBoundingClientRect(), b2 = inRow[1].getBoundingClientRect();
+    var stacked = Math.abs(a.left - b2.left) < 6 && b2.top >= a.bottom - 2;
+    if (!stacked) continue;
+
+    imp(row, 'display', 'flex');
+    imp(row, 'flex-direction', 'column');
+    imp(row, 'align-items', 'stretch');
+    imp(row, 'gap', '12px');
+    for (var j = 0; j < inRow.length; j++){
+      imp(inRow[j], 'width', '100%');
+      imp(inRow[j], 'justify-content', 'center');
+      imp(inRow[j], 'margin', '0px');
+    }
+    /* whatever comes next must not sit on top of the buttons */
+    var next = row.nextElementSibling;
+    if (next && px(getComputedStyle(next).marginTop) < 30) imp(next, 'margin-top', '36px');
+    var host = row.parentElement;
+    if (host && host !== main){
+      var after = host.nextElementSibling;
+      if (after && px(getComputedStyle(after).marginTop) < 30) imp(after, 'margin-top', '36px');
+    }
+  }
+}
+
+/* ---------- 5. a mono label sitting flush on the heading below it ---------- */
+function labelGap(){
+  var main = document.querySelector('main'); if (!main) return;
+  var heads = main.querySelectorAll('h2,h3');
+  for (var i = 0; i < heads.length; i++){
+    var h = heads[i];
+    var prev = h.previousElementSibling;
+    if (!prev) continue;
+    var hr = h.getBoundingClientRect(), pr = prev.getBoundingClientRect();
+    if (hr.height < 1 || pr.height < 1) continue;
+    if (hr.top - pr.bottom > 7) continue;                 /* already has room */
+
+    /* is the thing above it a small mono label rather than body copy? */
+    var probe = prev.children.length ? prev.children[0] : prev;
+    var ps = getComputedStyle(probe);
+    if (ps.textTransform !== 'uppercase') continue;
+    if (parseFloat(ps.fontSize) > 14) continue;
+    if ((prev.textContent || '').trim().length > 48) continue;
+
+    imp(h, 'margin-top', '14px');
+  }
+}
+
+function clear(){
+  var main = document.querySelector('main'); if (!main) return;
+  var marked = main.querySelectorAll('[data-ap-prose]');
+  for (var i = 0; i < marked.length; i++){
+    marked[i].style.removeProperty('grid-template-columns');
+    marked[i].style.removeProperty('row-gap');
+    marked[i].removeAttribute('data-ap-prose');
+  }
+}
+
+function apply(){
+  if (!isMobile()){ clear(); return; }
+  heroGap(); proseGrid(); buttonRows(); labelGap();
+}
+
+apply();
+document.addEventListener('DOMContentLoaded', apply);
+window.addEventListener('load', apply);
+[80,250,600,1200,2000,3200,4800].forEach(function(t){ setTimeout(apply, t); });
+var q2 = null;
+try{
+  new MutationObserver(function(){
+    if (q2) return;
+    q2 = setTimeout(function(){ q2 = null; apply(); }, 90);
+  }).observe(document.documentElement, {childList:true, subtree:true});
+}catch(e){}
+if (mq){
+  if (mq.addEventListener) mq.addEventListener('change', apply);
+  else if (mq.addListener) mq.addListener(apply);
+}
+window.addEventListener('resize', function(){ apply(); }, {passive:true});
+document.addEventListener('click', function(){ setTimeout(apply, 60); setTimeout(apply, 400); }, true);
+})();
+</script><!-- ap-fix:end -->
 </body>
 </html>
